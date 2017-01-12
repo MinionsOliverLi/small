@@ -1,0 +1,61 @@
+{% extends 'fashion_admin/table_index.html' %}
+{% load mytags %}
+
+{% block panel %}
+
+<div class="panel panel-primary">
+
+      <div class="panel-heading">
+          <h3 class="panel-title">Panel title</h3>
+      </div>
+      <div class="panel-body">
+{#          {{ admin_class }}#}
+{#          {{ data }}#}
+          <div class="row">
+              <form method="get">
+                {% for condition in admin_class.list_filter %}
+                  <div class="col-lg-2">
+                  <span>{{ condition }}</span>
+                  {% render_filter_ele condition admin_class filter_conditions %}
+                  </div>
+                {% endfor %}
+                <button class="btn btn-success" type="submit" style="margin-top: 20px">过滤</button>
+              </form>
+          </div>
+          <hr style="border: 1px solid #999999">
+          <table class="table table-hover">
+              <thead>
+                  <tr>
+                    {% for column in admin_class.list_display %}
+                    <td style="font-weight: 700">{{ column }}</td>
+                    {% endfor %}
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for obj in data %}
+                  <tr>{% build_row obj admin_class %}</tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+
+          <nav>
+              <ul class="pagination">
+                {% if data.has_previous %}
+                <li class=""><a href="?page={{ data.previous_page_number }}">«</a></li>
+                {% endif %}
+
+                {% for loop_counter in data.paginator.page_range %}
+                    {% get_page_ele loop_counter data %}
+                {% endfor %}
+
+                {% if data.has_next %}
+                <li><a href="?page={{ data.next_page_number }}">»</a></li>
+                {% endif %}
+             </ul>
+          </nav>
+
+      </div>
+
+</div>
+
+{% endblock %}
